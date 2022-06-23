@@ -1,0 +1,36 @@
+Config { font = "xft:Fira Mono:pixelsize=12:antialias=true:hinting=true"
+       , additionalFonts = [ "xft:Hurmit Nerd Font Mono:pixelsize=11:antialias=true:hinting=true"
+                           , "xft:Font Awesome 5 Free Solid:style=Solid:pixelsize=12"
+                           , "xft:Font Awesome 5 Brands:pixelsize=12"
+	                   ]		
+       , borderColor = "black"
+       , border = TopB
+       , bgColor = "black"
+       , fgColor = "grey"
+       , alpha = 255
+       , position = Top
+       , textOffset = -1
+       , iconOffset = -1
+       , lowerOnStart = True
+       , pickBroadest = False
+       , persistent = False
+       , hideOnStart = False
+       , iconRoot     = ".xmonad/xpm/"  -- default: "."
+       , allDesktops = True
+       , overrideRedirect = True
+       , commands = [ Run Weather "EETN" ["-t","<tempC>C"] 36000
+                    , Run Cpu ["-L","3","-H","50", "--normal","green","--high","red"] 10
+                    , Run Uptime ["-t", "uptime: <days>d <hours>h <minutes>m "] 60
+                    , Run Memory ["-t","Mem: <usedratio>%"] 10
+                    , Run Date "%b %_d %Y  %-l:%M %p" "date" 10
+                    , Run Network "enp1s0" ["-L","0","-H","32","--normal","green","--high","red"] 10
+                    , Run Com "/bin/bash" ["-c","nvidia-settings -t -q '[gpu:0]/GPUUtilization' | cut -d ',' -f1 | cut -d '=' -f2"] "pgt430" 50
+                    , Run Com "/home/alex/Scripts/lang.sh" [] "lang" 1
+                    -- Prints out the left side items such as workspaces, layout, etc.
+                    , Run UnsafeStdinReader
+                    
+                    ]
+       , sepChar = "%"
+       , alignSep = "}{"
+       , template = " <action=`alacritty -e reboot` button=1><action=`alacritty -e shutdown now` button=3><icon=0008.xpm/></action></action>   %UnsafeStdinReader%  } <fc=#9a009a>%date%</fc> { <action=`alacritty -e sudo pacman -Syu | yes` button=1><icon=est.xpm/></action>  | %lang% | %cpu% | %memory% | %pgt430% | %EETN% | %uptime% | %enp1s0% | <icon=discord.xpm/>  "
+       }
